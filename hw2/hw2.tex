@@ -1,0 +1,293 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Short Sectioned Assignment
+% LaTeX Template
+% Version 1.0 (5/5/12)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% Original author:
+% Frits Wenneker (http://www.howtotex.com)
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[paper=a4, fontsize=11pt]{scrartcl} % A4 paper and 11pt font size
+
+\usepackage[T1]{fontenc} % Use 8-bit encoding that has 256 glyphs
+\usepackage{fourier} % Use the Adobe Utopia font for the document - comment this line to return to the LaTeX default
+\usepackage[english]{babel} % English language/hyphenation
+\usepackage{amsmath,amsfonts,amsthm} % Math packages
+
+\usepackage{lipsum} % Used for inserting dummy 'Lorem ipsum' text into the template
+
+\usepackage{indentfirst}
+\setlength{\parindent}{2em}
+
+\usepackage{sectsty} % Allows customizing section commands
+\allsectionsfont{\centering \normalfont\scshape} % Make all sections centered, the default font and small caps
+
+\usepackage{fancyhdr} % Custom headers and footers
+\pagestyle{fancyplain} % Makes all pages in the document conform to the custom headers and footers
+\fancyhead{} % No page header - if you want one, create it in the same way as the footers below
+\fancyfoot[L]{} % Empty left footer
+\fancyfoot[C]{} % Empty center footer
+\fancyfoot[R]{\thepage} % Page numbering for right footer
+\renewcommand{\headrulewidth}{0pt} % Remove header underlines
+\renewcommand{\footrulewidth}{0pt} % Remove footer underlines
+\setlength{\headheight}{13.6pt} % Customize the height of the header
+
+\numberwithin{equation}{section} % Number equations within sections (i.e. 1.1, 1.2, 2.1, 2.2 instead of 1, 2, 3, 4)
+\numberwithin{figure}{section} % Number figures within sections (i.e. 1.1, 1.2, 2.1, 2.2 instead of 1, 2, 3, 4)
+\numberwithin{table}{section} % Number tables within sections (i.e. 1.1, 1.2, 2.1, 2.2 instead of 1, 2, 3, 4)
+
+\setlength\parindent{0pt} % Removes all indentation from paragraphs - comment this line for an assignment with lots of text
+
+%----------------------------------------------------------------------------------------
+%	TITLE SECTION
+%----------------------------------------------------------------------------------------
+
+\newcommand{\horrule}[1]{\rule{\linewidth}{#1}} % Create horizontal rule command with 1 argument of height
+
+\title{	
+\normalfont \normalsize 
+\textsc{Northwestern University} \\ [25pt] % Your university, school and/or department name(s)
+\horrule{0.5pt} \\[0.4cm] % Thin top horizontal rule
+\huge EECS 336 -- Homework 2 \\ % The assignment title
+\horrule{2pt} \\[0.5cm] % Thick bottom horizontal rule
+}
+
+\author{Weihan Chu} % Your name
+
+\date{\normalsize\today} % Today's date or a custom date
+
+\begin{document}
+
+\maketitle % Print the title
+
+%----------------------------------------------------------------------------------------
+%	PROBLEM 1
+%----------------------------------------------------------------------------------------
+
+\section{Question 1}
+
+\subsection{Question 1 Part a}
+From the question of part a, we can get that:
+
+\begin{equation*}
+\begin{split}
+T(n) &=5T(\frac{n}{2})+\Theta(n)\\
+\end{split}					
+\end{equation*}
+then for the characteristic equation:
+\begin{equation*}
+\begin{split}
+5({\frac{1}{2}})^x=1\\
+\end{split}					
+\end{equation*}
+so $x=lg5$ , and $ \alpha=1 $, $\beta=0 $\\
+because $x>\alpha $\\
+finally we get:
+\begin{equation*}
+\begin{split}
+T(n) &=\theta(n^x)\\
+    &=n^{lg5}
+\end{split}					
+\end{equation*}
+
+%------------------------------------------------
+
+\subsection{Question 1 Part b}
+From the question of part b, we can get that:
+
+\begin{equation*}
+\begin{split}
+T(n) &=2T(n-1)+ \theta(1)\\
+    &=\theta(2^n)
+\end{split}					
+\end{equation*}
+
+%------------------------------------------------
+\subsection{Question 1 Part c}
+From the question of part b, we can get that:
+
+\begin{equation*}
+\begin{split}
+T(n) &=9T(\frac{n}{3})+ \theta(n^3)+\theta(n^2)\\
+     &=9T(\frac{n}{3})+ \theta(n^3)\\
+\end{split}					
+\end{equation*}
+so $x=2$ , and $ \alpha=3 $, $\beta=0 $\\
+because $x<\alpha $\\
+finally we get:
+\begin{equation*}
+\begin{split}
+T(n) &=\theta(n^{\alpha}({logn})^{\beta})\\
+    &=\theta(n^3)
+\end{split}					
+\end{equation*}
+
+so I would like to use the first algorithm, because it has the least complexity.
+%----------------------------------------------------------------------------------------
+%	PROBLEM 2
+%----------------------------------------------------------------------------------------
+\vspace{2cm}
+\section{Question 2}
+let $m=lgn$
+\begin{align*}
+\begin{split}
+T(2^m) &=3T(2^{\frac{m}{3}})+24T(2^{\frac{m}{6}})+m^2*(log m)^{\frac{3}{2}}+101000078
+\end{split}
+\end{align*}
+now rename $S(m)=T(2^m)$ to produce new recurrence, then:\\
+\begin{align*}
+\begin{split}
+S(m)=3T(\frac{m}{3})+24T(\frac{m}{6})+m^2*(log m)^{\frac{3}{2}}
+\end{split}
+\end{align*}
+then we get: $x=2, \alpha=2 , \beta=\frac{3}{2}$\\
+so: $S(m)=\theta(m^{2}lgm)$
+now changing back from $ S(m)$ to $T(n) $
+\begin{align*}
+\begin{split}
+T(n) &=T(2^m)\\
+    &=S(m)\\
+    &=\theta(m^{2}{lgm}^{2.5})\\
+    &=\theta({lgn}^2*{lglgn}^{2.5})\\
+\end{split}
+\end{align*}
+
+%----------------------------------------------------------------------------------------
+%	PROBLEM 3
+%----------------------------------------------------------------------------------------
+\vspace{2cm}
+\section{Question 3}
+\subsection{Question 3 Part a}
+a.1.Master Theorem in class:
+$$5(\frac{1}{2})^x+176(\frac{1}{4})^x=1$$
+$$ x=4, \alpha=4 , \beta=-3$$
+because $ \beta<0 $, so we couldn't solve this problem by this method.\\
+a.2.Master Theorem in textbook:\\
+Since this algorithm can only solve the problem which only has one set of T(bn). In this problem above, there are more than one T(bn). So this algorithm can not solve this problem.
+a.3.Akra-Bazzi Master Theorem:\\
+$$5(\frac{1}{2})^p+176{\frac{1}{4}}^p=1  $$
+$$ p=4 $$
+\begin{align*}
+\begin{split}
+T(x) &\in\theta(x^p(1+\int_{1}^{x}{\frac{g(u)}{u^{p+1}}du}))\\
+&=\theta(x^4(1+\int_{1}^{x}{\frac{1}{u{(lgu)}^3}du}))\\
+&=\theta(x^4)\\
+\end{split}
+\end{align*}
+
+\subsection{Question 3 Part b}
+b.1.Master Theorem in class:
+$$5(\frac{1}{3})^x+4(\frac{1}{6})^x+26(\frac{1}{9})^x=1$$\
+put $\alpha=2 $into this function:
+$$(\frac{1}{3})^2+4(\frac{1}{6})^2+26(\frac{1}{9})^2=(\frac{80}{81})<1$$
+so $x>\alpha$, this function is in first case
+\begin{align*}
+\begin{split}
+T(n)=\theta(n^{2})
+\end{split}
+\end{align*}
+b.2.Master Theorem in textbook:\\
+Since this algorithm can only solve the problem which only has one set of T(bn). In this problem above, there are more than one T(bn). So this algorithm can not solve this problem.
+b.3.Akra-Bazzi Master Theorem:\\
+\begin{align*}
+\begin{split}
+T(x) &\in\theta(x^p(1+\int_{1}^{x}{\frac{g(u)}{u^{p+1}}du}))\\
+&=\theta(x^p(1+\int_{1}^{x}{{u}^{1-p}du}))\\
+&=\theta(x^p(1+{x}^{2-p}))\\
+&=\theta{(x^2)}\\
+\end{split}
+\end{align*}
+
+
+\subsection{Question 3 Part c}
+c.1.Master Theorem in class:
+$x=2, \alpha=2,\beta=1$\\
+so this is second case
+\begin{align*}
+\begin{split}
+T(n)=\theta(n^{2}(log n)^{2})
+\end{split}
+\end{align*}
+c.2.Master Theorem in textbook:\\
+$$a=25, b=5, n^{log_5 25}=n^2$$
+$$f(n)=\Omega({n^{log_5 25+\epsilon}})$$\\
+for any $\epsilon:$\\
+$$ \frac{f(n)}{n^2}=lgn $$
+which smaller than $ n^{\epsilon}$\\
+so this function can not be resolved by this algorithm.\\
+c.3.Akra-Bazzi Master Theorem:\\
+$p=2$
+\begin{align*}
+\begin{split}
+T(x) &\in\theta(x^p(1+\int_{1}^{x}{\frac{g(u)}{u^{p+1}}du}))\\
+&=\theta({x}^{2}(1+\int_{1}^{x}{\frac{lgu}{u}du}))\\
+&=\theta(x^{2}(log x)^{2})
+\end{split}
+\end{align*}
+
+\subsection{Question 3 Part d}
+d.1.Master Theorem in class:\\
+$x=1,\alpha=2, \beta=1$\\
+so this is first case
+\begin{align*}
+\begin{split}
+T(n)=\theta(n^{2}(log n))
+\end{split}
+\end{align*}
+d.2.Master Theorem in textbook:\\
+$$a=5, b=5, n^{log_5 5}=n$$
+$$f(n)=\Omega({n^{log_5 5+\epsilon}})$$\\
+for any $\epsilon:$\\
+$$ \frac{f(n)}{n}=nlgn $$
+so this satisfies the third case:
+$$ T(n)=\theta(f(n))=\theta{(n^2lgn)} $$
+d.3.Akra-Bazzi Master Theorem:\\
+$p=1$
+\begin{align*}
+\begin{split}
+T(x) &\in\theta(x^p(1+\int_{1}^{x}{\frac{g(u)}{u^{p+1}}du}))\\
+&=\theta({x}^{1}(1+\int_{1}^{x}{{xlgx-x}du}))\\
+&=\theta(x^{2}(log x))\\
+\end{split}
+\end{align*}
+
+
+\vspace{2cm}
+\section{Question 4}
+To solve this problem, we can first delete the number which is bigger than the biggest median and the number which is smaller than the smallest median. Then do this recursively. Because 
+$$\frac{1}{2}+\frac{1}{2^2}+......+\frac{1}{2^n}+ =1$$
+so we need to do this $lgn times$
+so this algorithm's time complexity is $lgn$
+
+\vspace{2cm}
+\section{Question 5}
+We can solve this problem by binary search. First divide the whole array into two arrays: a1 is the left array and a2 is the right array. Then we check the median element in the array. If this element is bigger than 0. then we just check the right array. If this element is smaller or equal than 0 and the nearest left element is bigger than 0. Then we find  the element and return. If this element is smaller or equal than 0 and the nearest left element is smaller than 0, then we just check the left array. Do this recursively.
+For the time complexity: every time we divide, we will find the half of the array is unhelpful. 
+So we can get that:
+$$ T(n)=T(\frac{n}{2})+1$$
+$x=0, \alpha=0, \beta=0$
+so the time complexity is
+$$T(n)=\theta{(log n)}$$
+
+\vspace{2cm}
+\section{Question 6}
+we can use divide and conquer to solve this problem by divide the array into two subarrays. And there is a median element.So there comes three conditions. One condition is that i and j are both in median's left. Second condition is that both i and j are in median's right. The last condition is that i is in median's left when j is in median's right. When the actual condition is the first and second condition. This is a small problem. For example, to solve the whole problem, the time complexity is $T(n)$. To solve the first and second condition, the time complexity is $T(\frac{n}{2})$. For the third condition, what we need to do is to find the positon of i and j. So is takes $\theta(n)$.
+So totally, if we use divide and conquer to solve this problem, 
+$$T(n)=2T(\frac{n}{2})+n$$
+$x=1, \alpha=1, \beta=0$
+so this is the second condition:
+$$T(n)=\theta{(nlgn)}$$
+
+
+\end{document}

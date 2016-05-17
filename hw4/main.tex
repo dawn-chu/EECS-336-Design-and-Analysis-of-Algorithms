@@ -1,0 +1,257 @@
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[paper=a4, fontsize=11pt]{scrartcl} % A4 paper and 11pt font size
+
+\usepackage[T1]{fontenc} % Use 8-bit encoding that has 256 glyphs
+\usepackage{fourier} % Use the Adobe Utopia font for the document - comment this line to return to the LaTeX default
+\usepackage[english]{babel} % English language/hyphenation
+\usepackage{amsmath,amsfonts,amsthm} % Math packages
+
+\usepackage{lipsum} % Used for inserting dummy 'Lorem ipsum' text into the template
+\usepackage{listings}
+
+\usepackage{caption}
+\usepackage{algorithm}
+\usepackage{algorithmic} 
+\usepackage{multirow}
+
+\usepackage{indentfirst}
+\setlength{\parindent}{2em}
+
+\usepackage{sectsty} % Allows customizing section commands
+\allsectionsfont{\centering \normalfont\scshape} % Make all sections centered, the default font and small caps
+
+\usepackage{fancyhdr} % Custom headers and footers
+\pagestyle{fancyplain} % Makes all pages in the document conform to the custom headers and footers
+\fancyhead{} % No page header - if you want one, create it in the same way as the footers below
+\fancyfoot[L]{} % Empty left footer
+\fancyfoot[C]{} % Empty center footer
+\fancyfoot[R]{\thepage} % Page numbering for right footer
+\renewcommand{\headrulewidth}{0pt} % Remove header underlines
+\renewcommand{\footrulewidth}{0pt} % Remove footer underlines
+\setlength{\headheight}{13.6pt} % Customize the height of the header
+
+\numberwithin{equation}{section} % Number equations within sections (i.e. 1.1, 1.2, 2.1, 2.2 instead of 1, 2, 3, 4)
+\numberwithin{figure}{section} % Number figures within sections (i.e. 1.1, 1.2, 2.1, 2.2 instead of 1, 2, 3, 4)
+\numberwithin{table}{section} % Number tables within sections (i.e. 1.1, 1.2, 2.1, 2.2 instead of 1, 2, 3, 4)
+
+\setlength\parindent{0pt} % Removes all indentation from paragraphs - comment this line for an assignment with lots of text
+
+%----------------------------------------------------------------------------------------
+%	TITLE SECTION
+%----------------------------------------------------------------------------------------
+
+\newcommand{\horrule}[1]{\rule{\linewidth}{#1}} % Create horizontal rule command with 1 argument of height
+
+\title{	
+\normalfont \normalsize 
+\textsc{Northwestern University} \\ [25pt] % Your university, school and/or department name(s)
+\horrule{0.5pt} \\[0.4cm] % Thin top horizontal rule
+\huge EECS 336 -- Homework 4 \\ % The assignment title
+\horrule{2pt} \\[0.5cm] % Thick bottom horizontal rule
+}
+
+\author{Weihan Chu} % Your name
+
+\date{\normalsize\today} % Today's date or a custom date
+
+\begin{document}
+
+\maketitle % Print the title
+
+
+%----------------------------------------------------------------------------------------
+%	PROBLEM 1
+%----------------------------------------------------------------------------------------
+\section{\textbf{Question 1}}
+This algorithm is not right. For example, if $X=BCDAAAAAAA$ , $Y=AAAAAAABCD$ from those two strings, we can easily get that the longest common sub-sequence is $AAAAAAA$, but if we use the algorithm this article provided, we start from the beginning. We can find that $B$ fits the requirement. So $B$ must be one element of the result, which contracts the fact. So this algorithm is not right.  
+
+
+%----------------------------------------------------------------------------------------
+%	PROBLEM 2
+%----------------------------------------------------------------------------------------
+\vspace{2cm}
+\section{\textbf{Question 2}}
+I think those two methods provide same optimal trees.
+Suppose that the lecture cost model is $c_1(i,j)$, and the book cost model is $c_2(i,j)$, where $i,j$ is the binary search tree from $k_i, k_i+1,...k_j$.Assume they have different result that: $c_2(i,j)-c_1(i,j)=\Sigma_{i\leq m\leq j} a_m$ \\
+if $k_o$ is the point that we can get the optimal binary search tree. for any $k \in[i,j]$, we have that :\\
+$$c_1(i,k-1)+c_1(k,j)\geq c_1(i,k_o-1)+c_1(k_o,j)$$\\
+from above we can get that:\\
+$$c_1(i,k-1)+\Sigma_{i\leq m\leq (k-1)}a_m+c_1(k,j)+\Sigma_{k\leq m\leq j}a_m \geq c_1(i,k_o-1)+\Sigma_{i\leq m\leq (k-1)}a_m+c_1(k_o,j)+\Sigma_{k\leq m\leq j}a_m$$\\
+from above we can get that:\\
+$$c_2(i,k-1)+c_2(k,j)\geq c_2(i,k_o-1)+c_2(k_o,j)$$\\
+so this equation tells us that $k_o$ is the result,which means $k_o$ is also the optimal binary search tree point for $c_2$. So those two cost model actually provide the same answer.
+
+
+%----------------------------------------------------------------------------------------
+%	PROBLEM 3
+%----------------------------------------------------------------------------------------
+\vspace{13cm}
+\section{\textbf{Question 3}}
+\subsection{\textbf{Part a}}
+In this problem, we use C represent the length of common sub-sequence and we use W to represent the weight. So we use $C[i,j]$ to represent the length of longest common sub-sequence till now, and we use the $W[i,j]$ to represent the total weight till now.\\
+\begin{algorithm}
+  \caption{shortest maximum-weight common sub-sequence}
+  \begin{algorithmic}
+  \STATE m=X.length, n=Y.length
+  \STATE let c[1..m,1..n] and w[1..m,1..n] be new tables
+  \FOR{$i\in[1,m]$}
+  \STATE $[c[i,0],w[i,0]]=[0,0]$\\
+  \ENDFOR
+  \FOR{$j\in[0,n]$}
+  \STATE $[c[0,j],w[0,j]]=[0,0]$\\
+  \ENDFOR
+  \FOR{$i\in[i,m]$}
+    \FOR{$j\in[1,n]$}
+    \IF{$x_i==y_i$}
+        \STATE $c[i,j]=c[i-1,j-1]+1$, $w[i,j]=w[i-1,j-1]+w_i$
+        \STATE then compare $w[i,j],w[i,j-1],w[i-1,j]$
+        \STATE $w[i,j]=\max{(w[i,j],w[i,j-1],w[i-1,j])}$
+    \ELSIF{$w[i,j-1]>w[i-1,j]$}
+        \STATE $c[i,j]=c[i,j-1]$, $w[i,j]=w[i,j-1]$
+    \ELSIF{$w[i-1,j]>w[i,j-1]$}
+        \STATE $c[i,j]=c[i-1,j]$, $w[i,j]=w[i-1,j]$
+    \ELSIF{$w[i-1,j]==w[i,j-1]$}
+         \IF{$c[i-1,j]<c[i,j-1]$}
+            \STATE $c[i,j]=c[i-1,j]$, $w[i,j]=w[i-1,j]$
+         \ELSE
+            \STATE $c[i,j]=c[i,j-1]$, $w[i,j]=w[i,j-1]$
+         \ENDIF
+    \ENDIF
+    \ENDFOR
+  \ENDFOR
+  \RETURN w and c
+  \end{algorithmic}
+\end{algorithm}
+
+To prove this algorithm, we just need to go through the whole process. There are three major cases:\\
+\textbf{Case 1:}: if $i=0 || j=0$ ,this means one of the alphabet's length is 0. so the total common sub-sequence's length and the weight should be zero.\\
+\textbf{Case 2:}: if $x_i==y_i$ ,this means that this character is useful for us to get the maximum weight because it can increase the total weight. So if this case happens, we should include this into our maximum weight calculation.\\
+\textbf{Case 3:}: if $x_i!=y_i$, there are also three small cases:\\
+    3.1:if $w[i,j-1]>w[i-1,j]$, this means the above weight is bigger than the left weight, so this place's value should inherit the above value.\\
+    3.2:if $w[i-1,j]>w[i,j-1]$, this means the left weight is bigger than the above weight, so this place's value should inherit the left value.\\
+    3.3:if $w[i-1,j]==w[i,j-1]$, this means the left weight is equal to the above value, so we should check whose length is less. If left length is less than the above length, we should choose the left length. If above length is less than left length, we should choose the above length.\\
+By this method, we can find the final result.\\
+For the time complexity, this algorithm takes $O(m*n)$ time complexity because it create a $m*n$ size table and to get every element in the table, it need $O(1)$.
+
+\vspace{8cm}
+\subsection{\textbf{Part b}}
+This problem is totally same as the the above problem, we only need to change some characters and conditions to get the final answer. To get the problem solved clear. I'll write the whole answer.
+In this problem, we use C represent the length of common sub-sequence and we use W to represent the weight. So we use $C[i,j]$ to represent the length of longest common sub-sequence till now, and we use the $W[i,j]$ to represent the total weight till now.\\
+\begin{algorithm}
+  \caption{maximum-weight longest common sub-sequence}
+  \begin{algorithmic}
+  \STATE m=X.length, n=Y.length
+  \STATE let c[1..m,1..n] and w[1..m,1..n] be new tables
+  \FOR{$i\in[1,m]$}
+  \STATE $[c[i,0],w[i,0]]=[0,0]$\\
+  \ENDFOR
+  \FOR{$j\in[0,n]$}
+  \STATE $[c[0,j],w[0,j]]=[0,0]$\\
+  \ENDFOR
+  \FOR{$i\in[i,m]$}
+    \FOR{$j\in[1,n]$}
+    \IF{$x_i==y_i$}
+        \STATE $c[i,j]=c[i-1,j-1]+1$, $w[i,j]=w[i-1,j-1]+w_i$
+        \STATE then compare $c[i,j],c[i,j-1],c[i-1,j]$
+        \STATE $c[i,j]=\max{(c[i,j],c[i,j-1],c[i-1,j])}$
+    \ELSIF{$c[i,j-1]>c[i-1,j]$}
+        \STATE $c[i,j]=c[i,j-1]$, $w[i,j]=w[i,j-1]$
+    \ELSIF{$c[i-1,j]>c[i,j-1]$}
+        \STATE $c[i,j]=c[i-1,j]$, $w[i,j]=w[i-1,j]$
+    \ELSIF{$c[i-1,j]==c[i,j-1]$}
+         \IF{$w[i-1,j]>w[i,j-1]$}
+            \STATE $c[i,j]=c[i-1,j]$, $w[i,j]=w[i-1,j]$
+         \ELSE
+            \STATE $c[i,j]=c[i,j-1]$, $w[i,j]=w[i,j-1]$
+         \ENDIF
+    \ENDIF
+    \ENDFOR
+  \ENDFOR
+  \RETURN w and c
+  \end{algorithmic}
+\end{algorithm}
+
+To prove this algorithm, we just need to go through the whole process. There are three major cases:\\
+\textbf{Case 1:}: if $i=0 || j=0$ ,this means one of the alphabet's length is 0. so the total common sub-sequence's length and the weight should be zero.\\
+\textbf{Case 2:}: if $x_i==y_i$ ,this means that this character is useful for us to get the longest common sub-sequence because it can increase the total length. So if this case happens, we should include this into our longest length calculation.\\
+\textbf{Case 3:}: if $x_i!=y_i$, there are also three small cases:\\
+    3.1:if $c[i,j-1]>c[i-1,j]$, this means the above common length is bigger than the left common length, so this place's value should inherit the above value.\\
+    3.2:if $c[i-1,j]>c[i,j-1]$, this means the left common length is bigger than the common length, so this place's value should inherit the left value.\\
+    3.3:if $c[i-1,j]==c[i,j-1]$, this means the left common length is equal to the above value, so we should check whose weight is bigger. If left weight is bigger than the above weight, we should choose the left weight. If above weight is bigger than left weight, we should choose the above weight.\\
+By this method, we can find the final result.\\
+For the time complexity, this algorithm takes $O(m*n)$ time complexity because it create a $m*n$ size table and to get every element in the table, it need $O(1)$.
+
+%----------------------------------------------------------------------------------------
+%	PROBLEM 4
+%----------------------------------------------------------------------------------------
+\vspace{2cm}
+\section{\textbf{Question 4}}
+For each renting, $m(i,j)=$total minimum total rental cost from post i to post j. $f(i,j)$=renting fees from post i to post j.
+So we can get the recurrence:
+$$m(i,j)=Min\{ f(i,j),m(i,k)+m(k+1,j) \},i\leq j-1, k=i+1,...,j-2$$\\
+\begin{algorithm}
+  \caption{total minimum total rental cost}
+  \begin{algorithmic}
+  \REQUIRE $i\leq j-1, k=i+1,...,j-2$
+  \STATE let $m[1..n,1..n]$ and $s[1..n-1,2..n]$ be new tables\\
+  \FOR{$i\in[1,n-1]$}
+  \STATE  $m[i,i+1]=f[i,i+1]$\\
+  \ENDFOR
+  \FOR{$l\in[3,n]$}
+    \FOR{$i\in[1,n-l+1]$}
+    \STATE $j=i+l-1$
+    \STATE $m[i,j]=f[i,j]$
+        \FOR{$k\in[i+1,j-1]$}
+        \STATE $q=m[i,k]+m[k,j]$
+        \IF{$q<m[i,j]$}
+        \STATE $m[i,j]=q$
+        \STATE $s[i,j]=k$
+        \ENDIF
+        \ENDFOR
+    \ENDFOR
+  \ENDFOR
+  \end{algorithmic}
+\end{algorithm}
+
+To prove this is correct, consider the solution for $m[1,n]$,There are two cases: either $j=i+1$ or $j>i+1$.\\
+\textbf{Case 1:} if $j=i+1$, it is easy to get that  $m[i,i+1]=f[i,i+1]$ because there are only one way to get from $i$ to $j$.\\
+\textbf{Case 2:} if $j>i+1$, we need to use $m(i,j)=Min\{ f(i,j),m(i,k)+m(k+1,j) \},i\leq j-1, k=i+1,...,j-2$ to find the min value, which means we search from beginning to end. For example, we want to get the min value of $m[1,4]$, so we will compare the value of $f[1,4]$(means directly go to the end without stop), ($m[1,2]+m[2,4]$) and ($m[1,3]+m[3,4]$) to find the min value from those three values; And we already calculate the value of $m[1,2], m[2,4], m[1,3], m[3,4]$ in formal steps and remember them. So we can get the min value of $m[1,4]$ now\\
+For the time complexity, this algorithm takes $O(n^3)$ because it has three layer loops. In first layer loop, the $l$ has $n-3+1$ different values. In the second layer loop, the $i$ has $n-l+1$ different values. In the third layer loop, the $k$ has $j-i-1$ different values. So totally this algorithm takes $O(n^3)$ time complexity. What's more, this algorithm also take $O(n^2)$ space complexity.
+%----------------------------------------------------------------------------------------
+%	PROBLEM 5
+%----------------------------------------------------------------------------------------
+
+\vspace{2cm}
+\section{\textbf{Question 5}}
+To solve this problem,  we need first sort all points according to their x coordinate in increasing order, where 1 denotes the starting point which has the smallest x and n is one of the turning point which has the smallest x coordinate . Then in the 4-tonic tour, we have a start point and three tuning point. This includes a n and two other points. We call those two points a and b. and we assume that $x_a<x_b$,now we have four paths in this 4-tonic tour:
+$$P1:[n \gets 1]$$
+$$P1:[n \gets a]$$
+$$P1:[b \gets a]$$
+$$P1:[b \gets 1]$$
+then we create a 4-dimensional table to do our algorithms:\\
+a new notation $L(i,j,p,q)$, in which i is the farthest point on P1, j is the farthest point on P4, p is the farthest point on P2, and q is the farthest point on P3. this $L(i,j,p,q)$ means the current minimum length in every path. To get the answer , we need to update the table like this.\\
+denote r is the next point and initialize the $L(1,1,a,a)=0$\\
+\textbf{Case 1:} if $1<r<a$:
+$$ r=1+\max(i,j)$$
+$$ L(r,j,a,a)=\min{L(i,j,a,a)+d(r,i),L(r,j,a,a)}$$
+$$ L(i,r,a,a)=\min{L(i,j,a,a)+d(r,j),L(i,r,a,a)}$$
+\textbf{Case 2:} if $a<r<b$:
+$$ r=1+max(i,j,p,q)$$
+$$ L(r,j,p,q)=\min{L(i,j,p,q)+d(r,i),L(r,j,p,q)}$$
+$$ L(i,r,p,q)=\min{L(i,j,p,q)+d(r,j),L(i,r,p,q)}$$
+$$ L(i,j,r,q)=\min{L(i,j,p,q)+d(p,r),L(i,j,r,q)}$$
+$$ L(i,j,p,r)=\min{L(i,j,p,q)+d(q,r),L(i,j,p,r)}$$
+\textbf{Case 3:} if $r=b$:
+$$L(i,b,p,b)=\min{L(i,j,p,q)+d(b,j)+d(b,q),L(i,b,p,b)}$$
+\textbf{Case 4:} if $n>r>b$:
+$$r=1+max{i,p}$$
+$$L(r,b,p,b)=\min{L(i,b,p,b)+d(i,r)}$$
+$$L(i,b,r,b)=\min{L(i,b,p,b)+d(r,p)}$$
+\textbf{Case 5:} if $r=n$:
+$$L(n,b,n,b)=\min{L(i,b,p,b)+d(n,i)+d(p,n)}$$
+For the correctness,because this algorithm traversal from beginning to end, and it uses the dynamic programming method to compute the best solution at every stage. because in every state it is a best solution. So this algorithm can get best shortest length at last.
+For the time complexity, this algorithm holds and updates a four dimension table and then it choose another a,b which is $n^2$. So the final complexity is $n^7$
+\end{document}

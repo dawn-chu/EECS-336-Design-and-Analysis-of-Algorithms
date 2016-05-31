@@ -1,0 +1,150 @@
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[paper=a4, fontsize=11pt]{scrartcl} % A4 paper and 11pt font size
+
+\usepackage[T1]{fontenc} % Use 8-bit encoding that has 256 glyphs
+\usepackage{fourier} % Use the Adobe Utopia font for the document - comment this line to return to the LaTeX default
+\usepackage[english]{babel} % English language/hyphenation
+\usepackage{amsmath,amsfonts,amsthm} % Math packages
+
+\usepackage{lipsum} % Used for inserting dummy 'Lorem ipsum' text into the template
+\usepackage{listings}
+
+\usepackage{caption}
+\usepackage{algorithm}
+\usepackage{algorithmic} 
+\usepackage{multirow}
+
+\usepackage{indentfirst}
+\setlength{\parindent}{2em}
+
+\usepackage{sectsty} % Allows customizing section commands
+\allsectionsfont{\centering \normalfont\scshape} % Make all sections centered, the default font and small caps
+
+\usepackage{fancyhdr} % Custom headers and footers
+\pagestyle{fancyplain} % Makes all pages in the document conform to the custom headers and footers
+\fancyhead{} % No page header - if you want one, create it in the same way as the footers below
+\fancyfoot[L]{} % Empty left footer
+\fancyfoot[C]{} % Empty center footer
+\fancyfoot[R]{\thepage} % Page numbering for right footer
+\renewcommand{\headrulewidth}{0pt} % Remove header underlines
+\renewcommand{\footrulewidth}{0pt} % Remove footer underlines
+\setlength{\headheight}{13.6pt} % Customize the height of the header
+
+\numberwithin{equation}{section} % Number equations within sections (i.e. 1.1, 1.2, 2.1, 2.2 instead of 1, 2, 3, 4)
+\numberwithin{figure}{section} % Number figures within sections (i.e. 1.1, 1.2, 2.1, 2.2 instead of 1, 2, 3, 4)
+\numberwithin{table}{section} % Number tables within sections (i.e. 1.1, 1.2, 2.1, 2.2 instead of 1, 2, 3, 4)
+
+\setlength\parindent{0pt} % Removes all indentation from paragraphs - comment this line for an assignment with lots of text
+
+%----------------------------------------------------------------------------------------
+%	TITLE SECTION
+%----------------------------------------------------------------------------------------
+
+\newcommand{\horrule}[1]{\rule{\linewidth}{#1}} % Create horizontal rule command with 1 argument of height
+
+\title{	
+\normalfont \normalsize 
+\textsc{Northwestern University} \\ [25pt] % Your university, school and/or department name(s)
+\horrule{0.5pt} \\[0.4cm] % Thin top horizontal rule
+\huge EECS 336 -- Homework 8 \\ % The assignment title
+\horrule{2pt} \\[0.5cm] % Thick bottom horizontal rule
+}
+
+\author{Weihan Chu} % Your name
+
+\date{\normalsize\today} % Today's date or a custom date
+
+\begin{document}
+
+\maketitle % Print the title
+
+
+%----------------------------------------------------------------------------------------
+%	PROBLEM 1
+%----------------------------------------------------------------------------------------
+\section{\textbf{Question 1}}
+Define a certificate for the language graph isomorphism to be a permutation $y$ that maps vertices of $G_1$ to vertices $G_2$.The verification algorithm first checks whether $y$ is a permutation. This step takes $O(V)$. Then checks that $G_1$ is identical to $G_2$,which means the algorithm checks that $(u,v)$ is an edge if and only if $(y(u),y(v))$ is an edge. This step takes $O(V+E)$. So the total complexity is $O(V+E)$. GRAPH-ISOMORPHISM is in NP.
+
+%----------------------------------------------------------------------------------------
+%	PROBLEM 2
+%----------------------------------------------------------------------------------------
+\vspace{2cm}
+\section{\textbf{Question 2}}
+So for this problem, we need to first find the complement of TAUTOLOGY,  which means there is any assignment of 1 and 0 to the input variables that formula evaluates to 0. Now we need to prove the complement of TAUTOLOGY $\in {NP}$. Assume that input is $x$ and $y$ is a certificate.\\ 
+Step1: We need to first verify that $y$ is a valid input, which means each $x_i$ is 0 or 1. If the input can satisfy this requirement, we just go to step 2. If else, we will output FALSE. The time complexity of this step is $O(K)$.\\
+Step2: We then use certificate as input variable to calculate the output and then evaluate whether the output is 0 or 1. This step takes $O(1)$.\\
+So the final time complexity is $O(K)$. So this is in polynomial time. So we can get that the complement of TAUTOLOGY $\in {NP}$. So TAUTOLOGY $\in {co-NP}$.
+
+%----------------------------------------------------------------------------------------
+%	PROBLEM 3
+%----------------------------------------------------------------------------------------
+\vspace{2cm}
+\section{\textbf{Question 3}}
+\subsection{\textbf{part a}}
+We can do this algorithm like follows. First, we take any vertex in the graph as the starting point and paint this vertex using the first color. Then we find all the vertices that are connected to the first vertex and paint all those vertices with the second color. Then we use the BFS method to find the vertices that are not visited and paint them. If all edges' two vertices are painted with different color then it is 2-colorable. If there are any edges whose both end vertices are painted with same color. Then the graph will not be 2-colorable.
+
+\subsection{\textbf{part b}}
+We can convert the graph coloring problem to the decision problem like: Given an undirected graph $G(V,E)$ and an integer k, can we color the graph G with k colors such that adjacent vertices have different colors.?\\
+a. If we can solve this decision problem in polynomial time. What we need to do is only to assign the k from $|V|$ to 2 and check whether the output of the decision problem is True. Then we just choose the minimum number from all numbers whose output is true, which actually means that the graph is colorable by this number of colors. So we solve this problem and  in linear time. This number is want we want in GRAPH-COLORING problem. So we can know that the time is still polynomial if the decision problem can be solved in polynomial time.\\
+b. If the GRAPH-COLORING problem can be solved in polynomial time. Then we know the minimum number of colors needed to make the graph colorable. We assume this number is m. and we assume the given number in decision problem is k. If $k<m$, we can output false in decision problem. If $k>=m$, we can output true in decision problem. So we just use constant time to solve this problem. So we can get that the time is still polynomial if the GRAPH-COLORING problem can be solved in polynomial time.
+
+\subsection{\textbf{part c}}
+If given a colored graph G and k, we can verify it has k colors and adjacent vertices have different colors in polynomial time. So this problem is in NP. \\
+Then we add $k-3$ vertex to G and they are  connected to other vertices to form a new graph $G_1$. From the proof in part b, we know that G will be 3-colorable only when $G_1$ be painted in k color. Since this conversion takes polynomial time and the decision problem is in NPC. So the 3-COLOR problem is also in NPC.
+
+%----------------------------------------------------------------------------------------
+%	PROBLEM 4
+%----------------------------------------------------------------------------------------
+\vspace{2cm}
+\section{\textbf{Question 4}}
+\subsection{\textbf{part a}}
+Input to the reduction:\\
+Graph $G=(V,E)$\\ \\
+Output to the reduction:\\
+Boolean expression $\phi$ in CNF with variables X and clauses C\\ \\
+For the description of $\phi$ in terms of G:\\ 
+If $|V|={[1,2,3...,n]}$, then $X={[x_{iv}|1<=i, v<=n]}$\\
+And $x_{iv}$ means the node v is the $i_th$ node of the Hamiltonian circle\\ \\
+We will construct C as follows:\\ \\
+1.For nodes $1<=v<=n$, node v must appear in the path\\
+$(x_{1v} \vee x_{2v} \vee ... \vee x_{nv})$, this step takes $O(n^2)$\\ \\
+
+2.For node $1<=v<=n$, node v must appear only once in the path\\
+$(\urcorner x_{iv} \vee \urcorner x_{kv}, 1<=i,k,v<=n, i !=k)$, this step takes $O(n^3)$ \\ \\
+
+3.For node $1<=v<=n$, some node v must be the $i_th$ node\\
+$(x_{i1} \vee x_{i2} \vee ... \vee x_{in})$, this step takes $O(n^2)$\\ \\
+
+4.For node $1<=v<=n$, two nodes v and w cannot both be the $i_th$\\
+$(\urcorner x_{iv} \vee \urcorner x_{ik}, 1<=i,k,v<=n, v!=k)$, this step takes $O(n^3)$ \\ \\
+
+5.Adjacent nodes in the path must also be adjacent in the graph.\\
+$(\urcorner x_{ki} \vee \urcorner x_{k+1,v})$, for all $(i,j)$ not in G and $1<=k<=n-1$, this step takes $O(n^3)$ \\ \\
+
+So we can convert the Hamiltonian circle to CNF-SAT in polynomial time. So we can get that HC<=CNF-SAT.
+
+\subsection{\textbf{part b}}
+We still use the same parameter as in part a.\\
+
+So we can construct as follows:\\
+1.For nodes $1<=v<=n$, node v must appear in the path\\
+$(x_{1v} + x_{2v} + ... + x_{nv} >=1)$, this step takes $O(n^2)$\\ \\
+
+2.For node $1<=v<=n$, node v must appear only once in the path\\
+$( x_{iv} + x_{kv} <= 1, 1<=i,k,v<=n, i !=k)$, this step takes $O(n^3)$ \\ \\
+
+3.For node $1<=v<=n$, some node v must be the $i_th$ node\\
+$(x_{i1} + x_{i2} + ... + x_{in}>=1)$, this step takes $O(n^2)$\\ \\
+
+4.For node $1<=v<=n$, two nodes v and w cannot both be the $i_th$\\
+$( x_{iv} + x_{ik} <= 1 , 1<=i,k,v<=n, v!=k)$, this step takes $O(n^3)$ \\ \\
+
+5.Adjacent nodes in the path must also be adjacent in the graph.\\
+$( x_{ki} + x_{k+1,v} <= 1)$, for all $(i,j)$ not in G and $1<=k<=n-1$, this step takes $O(n^3)$ \\ \\
+
+So we can convert the Hamiltonian circle to 01-LP in polynomial time. So we can get that HC<=01-LP.
+
+\end{document}

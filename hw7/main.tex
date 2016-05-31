@@ -1,0 +1,330 @@
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[paper=a4, fontsize=11pt]{scrartcl} % A4 paper and 11pt font size
+
+\usepackage[T1]{fontenc} % Use 8-bit encoding that has 256 glyphs
+\usepackage{fourier} % Use the Adobe Utopia font for the document - comment this line to return to the LaTeX default
+\usepackage[english]{babel} % English language/hyphenation
+\usepackage{amsmath,amsfonts,amsthm} % Math packages
+
+\usepackage{lipsum} % Used for inserting dummy 'Lorem ipsum' text into the template
+\usepackage{listings}
+
+\usepackage{caption}
+\usepackage{algorithm}
+\usepackage{algorithmic} 
+\usepackage{multirow}
+
+\usepackage{indentfirst}
+\setlength{\parindent}{2em}
+
+\usepackage{sectsty} % Allows customizing section commands
+\allsectionsfont{\centering \normalfont\scshape} % Make all sections centered, the default font and small caps
+
+\usepackage{fancyhdr} % Custom headers and footers
+\pagestyle{fancyplain} % Makes all pages in the document conform to the custom headers and footers
+\fancyhead{} % No page header - if you want one, create it in the same way as the footers below
+\fancyfoot[L]{} % Empty left footer
+\fancyfoot[C]{} % Empty center footer
+\fancyfoot[R]{\thepage} % Page numbering for right footer
+\renewcommand{\headrulewidth}{0pt} % Remove header underlines
+\renewcommand{\footrulewidth}{0pt} % Remove footer underlines
+\setlength{\headheight}{13.6pt} % Customize the height of the header
+
+\numberwithin{equation}{section} % Number equations within sections (i.e. 1.1, 1.2, 2.1, 2.2 instead of 1, 2, 3, 4)
+\numberwithin{figure}{section} % Number figures within sections (i.e. 1.1, 1.2, 2.1, 2.2 instead of 1, 2, 3, 4)
+\numberwithin{table}{section} % Number tables within sections (i.e. 1.1, 1.2, 2.1, 2.2 instead of 1, 2, 3, 4)
+
+\setlength\parindent{0pt} % Removes all indentation from paragraphs - comment this line for an assignment with lots of text
+
+%----------------------------------------------------------------------------------------
+%	TITLE SECTION
+%----------------------------------------------------------------------------------------
+
+\newcommand{\horrule}[1]{\rule{\linewidth}{#1}} % Create horizontal rule command with 1 argument of height
+
+\title{	
+\normalfont \normalsize 
+\textsc{Northwestern University} \\ [25pt] % Your university, school and/or department name(s)
+\horrule{0.5pt} \\[0.4cm] % Thin top horizontal rule
+\huge EECS 336 -- Homework 7 \\ % The assignment title
+\horrule{2pt} \\[0.5cm] % Thick bottom horizontal rule
+}
+
+\author{Weihan Chu} % Your name
+
+\date{\normalsize\today} % Today's date or a custom date
+
+\begin{document}
+
+\maketitle % Print the title
+
+
+%----------------------------------------------------------------------------------------
+%	PROBLEM 1
+%----------------------------------------------------------------------------------------
+\section{\textbf{Question 1}}
+\subsection{\textbf{part a}}
+case1: if $a_{i-1}>1/2$ and $a_i>=1/2$,we can get that:\\
+\begin{align*}
+\begin{split}
+\hat{c_i}&=c_i+\phi_i-\phi_{i-1}\\
+         &=1+(2num_i-size_i)-(2num_{i-1}-size_{i-1})\\
+         &=1+(2(num_{i-1}-1)-size_{i-1})-(2num_{i-1}-size_{i-1})\\
+         &=-1
+\end{split}
+\end{align*}
+
+case2: if $a_{i-1}=1/2$ and $a_i<1/2$,we can get that:\\
+\begin{align*}
+\begin{split}
+\hat{c_i}&=c_i+\phi_i-\phi_{i-1}\\
+         &=1+(size_i/2-num_i)-(2num_{i-1}-size_{i-1})\\
+         &=1+(size_{i-1}/2-(num_{i-1}-1))-(2num_{i-1}-size_{i-1})\\
+         &=2+3/2size_{i-1}-3num_{i-1}\\
+         &=2
+\end{split}
+\end{align*}
+So the TABLE-DELETE's amortized cost is bounded above by a constant.
+
+\subsection{\textbf{part b}}
+We can get the new potential function is:\\
+$$\phi(i) = \begin{cases}
+8 \times num_{i} - 4size_{i} & if \ \alpha(i) \geq 1/2  \cr 5size_{i} - 10num_{i}, &if \ \alpha(i) < 1/2\end{cases}$$
+case1: if $a_{i-1}>1/2$ and $a_i>=1/2$,we can get that:\\
+\begin{align*}
+\begin{split}
+\hat{c_i}&=c_i+\phi_i-\phi_{i-1}\\
+         &=1+(8num_i-4size_i)-(8num_{i-1}-4size_{i-1})\\
+         &=1+(8(num_{i-1}-1)-4size_{i-1})-(8num_{i-1}-4 size_{i-1})\\
+         &=-7
+\end{split}
+\end{align*}
+case2: if $a_{i-1}=1/2$ and $a_i<1/2$,we can get that:\\
+\begin{align*}
+\begin{split}
+\hat{c_i}&=c_i+\phi_i-\phi_{i-1}\\
+         &=1+(5size_i-10num_i)-(8num_{i-1}-4size_{i-1})\\
+         &=1+(5size_{i-1}-10(num_{i-1}-1))-(8num_{i-1}-4size_{i-1})\\
+         &=11+9size_{i-1}-18num_{i-1}\\
+         &=11
+\end{split}
+\end{align*}
+So the TABLE-DELETE's amortized cost is bounded above by a constant.
+
+%----------------------------------------------------------------------------------------
+%	PROBLEM 2
+%----------------------------------------------------------------------------------------
+\vspace{2cm}
+\section{\textbf{Question 2}}
+\subsection{\textbf{part a}}
+case1: if $a_{i-1}>1/2$ and $a_i>=1/2$,we can get that:
+\begin{align*}
+\begin{split}
+\hat{c_i}&=c_i+\phi_i-\phi_{i-1}\\
+         &=1+(2num_i-size_i)-(2num_{i-1}-size_{i-1})\\
+         &=1+(2(num_{i-1}-1)-size_{i-1})-(2num_{i-1}-size_{i-1})\\
+         &=-1
+\end{split}
+\end{align*}
+
+case2: if $a_{i-1}=1/2$ and $a_i<1/2$,we can get that:
+\begin{align*}
+\begin{split}
+\hat{c_i}&=c_i+\phi_i-\phi_{i-1}\\
+         &=1+(size_i-2num_i)-(2num_{i-1}-size_{i-1})\\
+         &=1+(size_{i-1}-2(num_{i-1}-1))-(2num_{i-1}-size_{i-1})\\
+         &=3+2size_{i-1}-4num_{i-1}\\
+         &=3
+\end{split}
+\end{align*}
+
+case3: if $1/3<a_{i-1}<=1/2$ and $1/3<=a_{i}<=1/2$,we can get that:
+\begin{align*}
+\begin{split}
+\hat{c_i}&=c_i+\phi_i-\phi_{i-1}\\
+         &=1+(size_i-2num_i)-(size_{i-1}-2num_{i-1})\\
+         &=1+(size_i-2(num_i-1))-(size_{i-1}-2num_{i-1})\\
+         &=3
+\end{split}
+\end{align*}
+
+case4: if $a_{i-1}=1/3$,we can get that:
+\begin{align*}
+\begin{split}
+\hat{c_i}&=c_i+\phi_i-\phi_{i-1}\\
+         &=num_i+1+(size_i-2num_i)-(size_{i-1}-2num_{i-1})\\
+         &=num_{i-1}-1+1+(2/3size_{i-1}-2(num_{i-1}-1))-(size_{i-1}-2num_{i-1})\\
+         &=2-1/3size_{i-1}+num_{i-1}\\
+         &=2\\
+\end{split}
+\end{align*}
+So the TABLE-DELETE's amortized cost is bounded above by a constant.
+
+\subsection{\textbf{part b}}
+The potential function I use is $|1/2T.size-2T.num|$\\
+case1: if $a_{i-1}>1/4$ and $a_i>=1/4$,we can get that:
+\begin{align*}
+\begin{split}
+\hat{c_i}&=c_i+\phi_i-\phi_{i-1}\\
+         &=1+(2num_i-1/2size_i)-(2num_{i-1}-1/2size_{i-1})\\
+         &=1+(2(num_{i-1}-1)-1/2size_{i-1})-(2num_{i-1}-1/2size_{i-1})\\
+         &=-1
+\end{split}
+\end{align*}
+
+case2: if $a_{i-1}=1/4$ and $a_i<1/4$,we can get that:
+\begin{align*}
+\begin{split}
+\hat{c_i}&=c_i+\phi_i-\phi_{i-1}\\
+         &=1+(2num_i-1/2size_i)-(1/2size_{i-1}-2num_{i-1})\\
+         &=1+(2(num_{i-1}-1)-1/2size_{i-1})-(1/2size_{i-1}-2num_{i-1})\\
+         &=4num_{i-1}-size_{i-1}-1\\
+         &=-1
+\end{split}
+\end{align*}
+
+case3: if $1/6<a_{i-1}<=1/4$ and $1/6<=a_{i}<=1/4$,we can get that:
+\begin{align*}
+\begin{split}
+\hat{c_i}&=c_i+\phi_i-\phi_{i-1}\\
+         &=1+(1/2size_i-2num_i)-(1/2size_{i-1}-2num_{i-1})\\
+         &=1+(1/2size_i-2(num_i-1))-(1/2size_{i-1}-2num_{i-1})\\
+         &=3
+\end{split}
+\end{align*}
+
+case4: if $a_{i-1}=1/6$,we can get that:
+\begin{align*}
+\begin{split}
+\hat{c_i}&=c_i+\phi_i-\phi_{i-1}\\
+         &=num_i+1+(1/2size_i-2num_i)-(1/2size_{i-1}-2num_{i-1})\\
+         &=num_{i-1}-1+1+(1/2*2/3size_{i-1}-2(num_{i-1}-1))-(1/2size_{i-1}-2num_{i-1})\\
+         &=2-1/6size_{i-1}+num_{i-1}\\
+         &=2\\
+\end{split}
+\end{align*}
+So the TABLE-DELETE's amortized cost is bounded above by a constant.
+
+
+
+%----------------------------------------------------------------------------------------
+%	PROBLEM 3
+%----------------------------------------------------------------------------------------
+\vspace{2cm}
+\section{\textbf{Question 3}}
+We need to prove this problem in two aspects.\\
+First,we assume that there are a solution $A_1$ for LONGEST-PATH-LENGTH problem and this solution is in polynomial time. And there is also a algorithm $A_2$ for deciding LONGEST-PATH. So we can get that:\\
+\begin{verbatim}
+Input:<G,u,v,k>
+Output:<True or False>
+
+Algorithm A2(G,u,v,k){
+    Max= A1(G,u,v);
+    if(k <= Max) 
+        return True;
+    else
+        return False;
+}
+\end{verbatim} 
+So if we have the solution of $A_1$, we can get the solution of $A_2$ in constant time. Since $A_1$ runs in polynomial time, so $A_2$ also runs in polynomial time. \\
+
+Second,we assume that there are a solution $B_1$ for LONGEST-PATH problem and this solution is in polynomial time. And there is also a algorithm $B_2$ for  LONGEST-PATH-LENGTH problem. So we can get that:\\
+\begin{verbatim}
+Input:<G,u,v>
+Output:The size of the longest path between u and v 
+
+Algorithm B2(G,u,v,k){
+    k=n;
+    while((k>=0) and B1(G,u,v,k)==False) do
+        k--;
+    return k;
+}
+\end{verbatim} 
+So if we have the solution of $B_1$, we can get the solution of $B_2$ in n time.Since $B_1$ runs in polynomial time, So $B_2$ also runs in polynomial time\\
+Therefore, we can prove that the optimization problem LONGEST-PATH-LENGTH can be solved in polynomial time IF AND ONLY IF LONGEST-PATH in {P}.
+
+
+%----------------------------------------------------------------------------------------
+%	PROBLEM 4
+%----------------------------------------------------------------------------------------
+\vspace{2cm}
+\section{\textbf{Question 4}}
+First,we give a formal encoding of directed graphs as binary strings using an adjacency matrix representation:\\
+Directed graph $G(V,E)$ is the graph that in which all edges are represented by an arrow from u to v which means the edge$(u,v)$.\\
+The adjacency-matrix $a(U,V)$ is a matrix using 1 is there is a arrow from one vertex to another, or using 0 is there is not a arrow from one vertex to another.\\
+As the pic1 I attached in the jpg file, which is an example of a directed graph. From the graph, we can get the adjacency matrix representation by binary strings as follows:\\
+$$
+\begin{matrix}
+     0 & 1 & 0 & 1 & 0 \\
+     1 & 0 & 1 & 1 & 0 \\
+     0 & 0 & 0 & 0 & 1 \\
+     0 & 1 & 0 & 0 & 1 \\
+     0 & 0 & 0 & 1 & 0 \\
+\end{matrix}
+$$
+This matrix representation of graph can be encoded as :\\
+$$ 01010 10110 00001 01001 00010$$
+This representation uses $V^2$ bits, which is in polynomial form. And we know the matrix is square, we can create it by counting the total bits of input and taking the square root of the input and then writing the bits in the same order.\\ \\
+Then we give a formal encoding of directed graph as binary string using adjacency-list representation.\\
+We just use the $n_{th}$ line being the vertex number and followed by numbers of all the numbers of all vertices connected to this vertex.\\
+$$
+\begin{matrix}
+     1 & 2 & 4 \\
+     2 & 1 & 3 & 4 \\
+     3 & 5\\
+     4 & 2 & 5 \\
+     5 & 4 \\
+\end{matrix}
+$$
+To represent the adjacency list, the memory will be $O(|V|+|E|)$. Since each vertex number will be between $1$ and $|V|$, so the total number of bits needed will be $O((|V|+|E|)lg|V|)$,which is also in the polynomial form.\\
+So now we get that the adjacency matrix representation and adjacency list representation both takes the polynomial type of time for representation. We will focus on to prove they are polynomially related.\\
+First, if we want to covert adjacency matrix representation to adjacency list representation:
+\begin{verbatim}
+For each row do
+    Scan the row from left to right
+    Add the column number to the list
+\end{verbatim} 
+So this is polynomially related.\\
+Then, if we want to covert adjacency list representation to adjacency matrix representation:
+\begin{verbatim}
+Start with a matrix M of all 0.
+Let i be a counter of the line you are at. In that line:
+    if hit the number j
+        then put a 1 in M[i,j]
+\end{verbatim} 
+So this is polynomially related.\\
+So the two representations are polynomially related.
+%----------------------------------------------------------------------------------------
+%	PROBLEM 5
+%----------------------------------------------------------------------------------------
+\vspace{2cm}
+\section{\textbf{Question 5}}
+To solve this problem by dynamic programming, we define $c[i,w]$ to be the solution for items $1,2,...,i$ and maximum weight , then we can get that:\\
+case1: $c[i,w]=0$,   if $i=0$. \\
+case2: $c[i,w]=c[i-1,w]$,   if $w_i>w$, which means the new item is more than the current weight limit.\\
+case3: $c[i,w]=max{(v_i+c[i-1,w-w_i],c[i-1,w])}$, if $i>0$ and $w\geq w_i$.\\
+\begin{verbatim}
+for j from 0 to W do:
+     m[0, j] = 0
+     
+for i from 1 to n do:
+     for j from 0 to W do:
+        if w[i-1] > j then:
+             m[i, j] = m[i-1, j]
+        else:
+             m[i, j] = max(m[i-1, j], m[i-1, j-w[i-1]] + v[i-1])
+\end{verbatim} 
+This solution will therefore run in $O(nW)$ time, where $n$ is the number of items and $W$ is the maximum weight that the knapsack can hold. This is not a polynomial running time for any reasonable representation of the input.\\
+Because a computer uses binary, so we can get that:\\
+\begin{align*}
+\begin{split}
+    T(n) &=O(nW)\\
+         &=(n2^{length of W})\\
+\end{split}
+\end{align*}
+So if we add one bit in the W, the run time will be doubled. So this problem is not a polynomial time problem.
+
+\end{document}
